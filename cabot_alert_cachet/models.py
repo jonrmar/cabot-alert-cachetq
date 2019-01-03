@@ -1,24 +1,19 @@
-from cabot.plugins.models import AlertPlugin
-from django import forms
+from cabot.cabotapp.alert import AlertPlugin, AlertPluginUserData
 from os import environ as env
 
 from logging import getLogger
 logger = getLogger(__name__)
 
-class SkeletonAlertUserSettingsForm(forms.Form):
-    favorite_bone = forms.CharField(max_length=100)
-
-class SkeletonAlertPlugin(AlertPlugin):
+class CachetAlertPlugin(AlertPlugin):
     name = "Skeleton"
     slug = "cabot_alert_skeleton"
     author = "Jonathan Balls"
     version = "0.0.1"
     font_icon = "fa fa-code"
 
-    user_config_form = SkeletonAlertUserSettingsForm
+    user_config_form = CachetAlertUserSettingsForm
 
     def send_alert(self, service, users, duty_officers):
-        calcium_level = env.get('CALCIUM_LEVEL') 
         message = service.get_status_message()
         for u in users:
             logger.info('{} - This is bad for your {}.'.format(
@@ -27,3 +22,11 @@ class SkeletonAlertPlugin(AlertPlugin):
 
         return True
 
+class CachetAlertUserData(AlertPluginUserData):
+    name = "Cachet Plugin"
+    slack_alias = models.CharField(max_length=50, blank=True)
+
+    def serialize(self):
+        return {
+            "slack_alias": self.slack_alias
+        }
