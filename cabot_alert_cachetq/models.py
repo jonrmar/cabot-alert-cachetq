@@ -24,7 +24,7 @@ class CachetqAlertPlugin(AlertPlugin):
 
 class CachetqAlertUserData(AlertPluginUserData):
     name = "Cachetq Plugin"
-    cachetq_alias = models.CharField(max_length=50, blank=True)
+    cachetq_alias = "test" #models.CharField(max_length=50, blank=True)
 
     def serialize(self):
         return {
