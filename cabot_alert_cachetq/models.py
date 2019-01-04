@@ -15,9 +15,9 @@ class CachetqAlertPlugin(AlertPlugin):
 
     def send_alert(self, service, users, duty_officers):
         message = service.get_status_message()
+	logger.info('Infos: Self: {}, Service: {}, Users: {}, Duty_Officers: {}'.format(self, service, users, duty_officers))
         for u in users:
-            logger.info('{} - This is bad for your {}.'.format(
-                message,
+            logger.info('This is bad for your {}.'.format(
                 u.cabot_alert_cachetq_settings.favorite_bone))
 
         return True
