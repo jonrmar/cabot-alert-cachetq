@@ -4,25 +4,25 @@ from os import environ as env
 from logging import getLogger
 logger = getLogger(__name__)
 
-class CachetAlertPlugin(AlertPlugin):
+class CachetqAlertPlugin(AlertPlugin):
     name = "Cachetq Alert"
     slug = "cabot_alert_cachetq"
     author = "Jonathan R Martinelli"
     version = "0.0.1"
     font_icon = "fa fa-code"
 
-    user_config_form = CachetAlertUserSettingsForm
+    user_config_form = CachetqAlertUserData
 
     def send_alert(self, service, users, duty_officers):
         message = service.get_status_message()
         for u in users:
             logger.info('{} - This is bad for your {}.'.format(
                 message,
-                u.cabot_alert_skeleton_settings.favorite_bone))
+                u.cabot_alert_cachetq_settings.favorite_bone))
 
         return True
 
-class CachetAlertUserData(AlertPluginUserData):
+class CachetqAlertUserData(AlertPluginUserData):
     name = "Cachetq Plugin"
     cachetq_alias = models.CharField(max_length=50, blank=True)
 
