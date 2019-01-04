@@ -11,7 +11,7 @@ class CachetqAlertPlugin(AlertPlugin):
     version = "0.0.1"
     font_icon = "fa fa-code"
 
-    cachetq_aliases = [u.cachetq_alias for u in CachetqAlertUserData.objects.filter(user__user__in=users)]
+#    cachetq_aliases = [u.cachetq_alias for u in CachetqAlertUserData.objects.filter(user__user__in=users)]
 
     def send_alert(self, service, users, duty_officers):
         message = service.get_status_message()
