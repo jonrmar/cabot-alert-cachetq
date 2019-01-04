@@ -5,9 +5,9 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 class CachetAlertPlugin(AlertPlugin):
-    name = "Skeleton"
-    slug = "cabot_alert_skeleton"
-    author = "Jonathan Balls"
+    name = "Cachetq Alert"
+    slug = "cabot_alert_cachetq"
+    author = "Jonathan R Martinelli"
     version = "0.0.1"
     font_icon = "fa fa-code"
 
@@ -23,10 +23,10 @@ class CachetAlertPlugin(AlertPlugin):
         return True
 
 class CachetAlertUserData(AlertPluginUserData):
-    name = "Cachet Plugin"
-    slack_alias = models.CharField(max_length=50, blank=True)
+    name = "Cachetq Plugin"
+    cachetq_alias = models.CharField(max_length=50, blank=True)
 
     def serialize(self):
         return {
-            "slack_alias": self.slack_alias
+            "cachetq_alias": self.cachetq_alias
         }

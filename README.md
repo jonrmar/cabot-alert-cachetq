@@ -1,5 +1,5 @@
-Cabot Cachet Alert Plugin
+Cabot Cachetq Alert Plugin
 =====
 
-This is the cachet alert plugin for Cabot.
+This is the cachetq alert plugin for Cabot.
 
