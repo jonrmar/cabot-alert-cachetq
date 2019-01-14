@@ -14,12 +14,14 @@ class CachetqAlertPlugin(AlertPlugin):
 #    cachetq_aliases = [u.cachetq_alias for u in CachetqAlertUserData.objects.filter(user__user__in=users)]
 
     def send_alert(self, service, users, duty_officers):
-	logger.info('Beginning Test')
-        pprint(vars(self))
-        pprint(vars(service))
-        pprint(vars(users))
-        pprint(vars(duty_officers))
-        logger.info('Infos: Self: {}, Service: {}, Users: {}, Duty_Officers: {}'.format(self, service, users, duty_officers))
+	logger.info('Beginning Test, self: ')
+        pprint(dir(self))
+        logger.info('Service: ')
+        pprint(dir(service))
+        logger.info('Users: ')
+        pprint(dir(users))
+        logger.info('Duty Officers: ')
+        pprint(dir(duty_officers))
         for u in users:
             logger.info('This is bad for your {}.'.format(
                 u.cabot_alert_cachetq_settings.favorite_bone))
