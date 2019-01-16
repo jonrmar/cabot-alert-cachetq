@@ -9,17 +9,19 @@ import json
 
 logger = getLogger(__name__)
 
-component_status = json.loads(env.get('CACHETQ_COMPONENT_STATUS'))
-component_id = json.loads(env.get('CACHETQ_COMPONENT_ID'))
+env_component_status = env.get('CACHETQ_COMPONENT_STATUS')
+env_component_id = env.get('CACHETQ_COMPONENT_ID')
 cachetq_url = env.get('CACHETQ_URL')
-cachetq_template="""Service {{ service.name }}\
+cachetq_template="""
+Service {{ service.name }}\
 {% if service.overall_status == service.PASSING_STATUS %}*is back to normal*{% else %}\ 
 reporting *{{ service.overall_status }}* status{% endif %}:\
 {% if service.overall_status != service.PASSING_STATUS %}Checks failing:\
 {% for check in service.all_failing_checks %}\
     - {{ check.name }} {% if check.last_result.error %} ({{ check.last_result.error|safe }}){% endif %}
 {% endfor %}\
-{% endif %}"""    
+{% endif %}
+"""    
 
 class CachetqAlertPlugin(AlertPlugin):
     name = "Cachetq Alert"
@@ -30,7 +32,10 @@ class CachetqAlertPlugin(AlertPlugin):
     def send_alert(self, service, users, duty_officers):
     	logger.info('Sending Cachetq Alert')
 
-        incidents = self._get_cachetq_incidents(service)
+        component_status = json.loads(env_component_status)
+        component_id = json.loads(env_component_id)
+
+        incidents = self._get_cachetq_incidents(self, service, component_id)
 
         c = Context({ 'service': service })
         message = Template(cachetq_template).render(c)
@@ -38,11 +43,11 @@ class CachetqAlertPlugin(AlertPlugin):
         if incidents:
             incident_id = incidents[0]['id']
             if incidents[0]['status'] != 4:
-                self._update_cachetq_incident(self, message, service)
+                self._update_cachetq_incident(self, message, service, component_status, component_id)
         else:
-            self._create_cachetq_incident(self, message, service)
+            self._create_cachetq_incident(self, message, service, component_status, component_id)
 
-    def _create_cachetq_incident(self, message, service):
+    def _create_cachetq_incident(self, message, service, component_status, component_id):
     	logger.info('Creating Cachetq Alert to: %s', service.overall_status)
 
         resp = requests.post(cachetq_url, data=json.dumps({
@@ -52,10 +57,10 @@ class CachetqAlertPlugin(AlertPlugin):
             'visible': 1,
             'component_id': component_id[service.name],
             'component_status': component_status[service.overall_status],
-            'notify': true
+            'notify': True
         }))
 
-    def _update_cachetq_incident(self, message, service):
+    def _update_cachetq_incident(self, message, service, component_status, component_id):
     	logger.info('Updating Cachetq Alert to: %s', service.overall_status)
         
         resp = requests.put(cachetq_url, data=json.dumps({
@@ -65,10 +70,10 @@ class CachetqAlertPlugin(AlertPlugin):
             'visible': 1,
             'component_id': component_id[service.name],
             'component_status': component_status[service.overall_status],
-            'notify': true
+            'notify': True
         }))
     
-    def _get_cachetq_incidents(service):
+    def _get_cachetq_incidents(self, service, component_id):
     	logger.info('Find existente incident: %s', service.name)
 
         name = service.name
