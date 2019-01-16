@@ -41,7 +41,7 @@ class CachetqAlertPlugin(AlertPlugin):
                 incident_id = incidents[0]['id']
                 if incidents[0]['status'] != 4:
                     self._update_cachetq_incident(message, service, component_status, component_id, incident_id)
-                else:
+                elif service.overall_status != service.PASSING_STATUS:
                     self._create_cachetq_incident(message, service, component_status, component_id)   
             elif service.overall_status != service.PASSING_STATUS:
                 self._create_cachetq_incident(message, service, component_status, component_id)
