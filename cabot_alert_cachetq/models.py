@@ -10,12 +10,11 @@ import json
 logger = getLogger(__name__)
 
 cachetq_template="""
-Service {{ service.name }}\
-{% if service.overall_status == service.PASSING_STATUS %}*is back to normal*{% else %}\ 
+Service {{ service.name }}{% if service.overall_status == service.PASSING_STATUS %} is back to normal {% else %}\ 
 reporting *{{ service.overall_status }}* status{% endif %}:\
 {% if service.overall_status != service.PASSING_STATUS %}Checks failing:\
 {% for check in service.all_failing_checks %}\
-    - {{ check.name }} {% if check.last_result.error %} ({{ check.last_result.error|safe }}){% endif %}
+    - {{ check.name }}
 {% endfor %}\
 {% endif %}
 """    
@@ -42,6 +41,8 @@ class CachetqAlertPlugin(AlertPlugin):
                 incident_id = incidents[0]['id']
                 if incidents[0]['status'] != 4:
                     self._update_cachetq_incident(message, service, component_status, component_id, incident_id)
+                else:
+                    self._create_cachetq_incident(message, service, component_status, component_id)   
             elif service.overall_status != service.PASSING_STATUS:
                 self._create_cachetq_incident(message, service, component_status, component_id)
         else:
@@ -84,7 +85,7 @@ class CachetqAlertPlugin(AlertPlugin):
         )
     
     def _get_cachetq_incidents(self, service, component_id):
-    	logger.info('Find existente incident: %s', service.name)
+    	logger.info('Find existent incident: %s', service.name)
 
         name = service.name
         component = component_id[name]
