@@ -51,8 +51,9 @@ class CachetqAlertPlugin(AlertPlugin):
         logger.info('Creating Cachetq Alert to: %s', service.overall_status)
         
         url = env.get('CACHETQ_URL') + "/incidents"
+        headers = {'Content-Type':'application/json', 'X-Cachet-Token': env.get('CACHETQ_TOKEN')}
         requests.post(url, 
-            headers={'X-Cachet-Token', env.get('CACHETQ_TOKEN')},
+            headers=headers,
             data=json.dumps({
                 'name': service.name,
                 'message': message,
@@ -68,9 +69,9 @@ class CachetqAlertPlugin(AlertPlugin):
     	logger.info('Updating Cachetq Alert to: %s', service.overall_status)
                 
         url = env.get('CACHETQ_URL') + "/incidents/{id}".format( id=incident_id )
-        
+        headers = {'Content-Type':'application/json', 'X-Cachet-Token': env.get('CACHETQ_TOKEN')}
         requests.put(url, 
-            headers={'X-Cachet-Token', env.get('CACHETQ_TOKEN')},
+            headers=headers,
             data=json.dumps({
                 'name': service.name,
                 'message': message,
