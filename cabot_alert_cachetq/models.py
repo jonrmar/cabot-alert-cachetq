@@ -11,7 +11,7 @@ import json
 logger = getLogger(__name__)
 
 cachetq_template="""
-Service {{ service.name }} {% if service.overall_status == service.PASSING_STATUS %} is back to normal {% else %}\ 
+Service {{ service.name }} {% if service.overall_status == service.PASSING_STATUS %} is back to normal {% else %} 
 reporting *{{ service.overall_status }}* status: {% endif %}\
 {% if service.overall_status != service.PASSING_STATUS %} Checks failing: \
 {% for check in service.all_failing_checks %}\
