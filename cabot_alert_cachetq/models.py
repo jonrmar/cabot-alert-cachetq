@@ -11,12 +11,17 @@ import json
 logger = getLogger(__name__)
 
 cachetq_template="""
-{% if service.overall_status == service.PASSING_STATUS %} is back to normal {% else %} 
-reporting *{{ service.overall_status }}* status: {% endif %}\
-{% if service.overall_status != service.PASSING_STATUS %} Checks failing: \
-{% for check in service.all_failing_checks %}\
-    - {{ check.name }}
-{% endfor %}\
+{% if service.overall_status == service.PASSING_STATUS %}
+    Fixado - O Incidente foi resolvido.
+{% else %} 
+    Estamos investigando relatos de: {% if service.overall_status != service.PASSING_STATUS %}  \
+    {% checks = []
+       for check in service.all_failing_checks:
+           checks.append(check.name) 
+       check_result = ",".join(checks)
+    %}\
+    {{ check_result }}
+    {% endfor %}\
 {% endif %}
 """    
 
