@@ -11,12 +11,13 @@ import json
 logger = getLogger(__name__)
 
 cachetq_template="""
-Incidente {% if service.overall_status == service.PASSING_STATUS %}Fixado - O Incidente foi resolvido. {% else %} - Estamos investigando relatos de: {% endif %}\
-{% if service.overall_status != service.PASSING_STATUS %} \
+Incidente {% if service.overall_status == service.PASSING_STATUS %} Fixado - O incidente foi resolvido {% else %} 
+- Estamos investigando {% endif %}\
+{% if service.overall_status != service.PASSING_STATUS %} relatos de: \
 {% for check in service.all_failing_checks %}\
     {{ check.name }}
 {% endfor %}\
-{% endif %}\
+{% endif %}
 """    
 
 class Visible(Enum):
