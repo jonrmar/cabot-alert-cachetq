@@ -21,6 +21,7 @@ cachetq_template="""
        {% endfor %}\
        {% check_result = ",".join(checks) %} \
     {{ check_result }} \
+    {% endif %}    
 {% endif %}
 """    
 
