@@ -29,10 +29,10 @@ Add the following properties to Cabot config file (development.env\production.en
             "Service2": CACHET_COMPONENT_ID_FOR_SERVICE2
         }
         ```
-* Concat _,cabot_alert_cachetq_ to **CABOT_PLUGINS_ENABLED** property in default.env Cabot file. Example below:
+Concat _cabot_alert_cachetq_ to **CABOT_PLUGINS_ENABLED** property in default.env Cabot file. Example below:
 ```
 CABOT_PLUGINS_ENABLED=cabot_alert_hipchat,cabot_alert_twilio,cabot_alert_email,cabot_alert_slack,cabot_alert_cachetq
 ```
 
-**Next:** follow Cabot documentation for writing alert plugins: https://cabotapp.com/dev/writing-alert-plugins.html. If you are using https://github.com/cabotapp/docker-cabot, a great guideline to install this plugin to docker-cabot is https://github.com/cabotapp/docker-cabot/issues/26.
+**Next:** Follow Writing Alert Plugins section in Cabot documentation: https://cabotapp.com/dev/writing-alert-plugins.html. If you are using https://github.com/cabotapp/docker-cabot, a great guideline to install this plugin to docker-cabot is https://github.com/cabotapp/docker-cabot/issues/26.
 
