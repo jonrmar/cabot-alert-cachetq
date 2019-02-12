@@ -45,13 +45,14 @@ class CachetqAlertPlugin(AlertPlugin):
             logger.warning('Service not found in config: %s', service.name)
 
     def _manage_cachetq_incidents(self, service, component_id, component_status):
+        FIRST_INCIDENT = 0
         incidents = self._get_cachetq_incidents(service, component_id)
 
         context_template = Context({ 'service': service })
         message = Template(cachetq_template).render(context_template)
 
         if incidents:
-            if incidents[0]['status'] != Status.FIXED.value:
+            if incidents[FIRST_INCIDENT]['status'] != Status.FIXED.value:
                 self._update_cachetq_incident(message, service, component_status, component_id, incidents[0])
             elif service.overall_status != service.PASSING_STATUS:
                 self._create_cachetq_incident(message, service, component_status, component_id)      
@@ -105,7 +106,8 @@ class CachetqAlertPlugin(AlertPlugin):
         url = env.get('CACHETQ_URL') + "/incidents"
         response = requests.get(url, params={
             'name':name,
-            'component_id': component
+            'component_id': component,
+            'sort': 'id'
             }
         )
         return json.loads(response.text)['data']
